@@ -12,19 +12,26 @@ describe('Gameboard class', () => {
 
 	test('Pass impossible coords', () => {
 		const gameboard = new Gameboard();
-		const ship = new Ship(2);
-		expect(gameboard.validateCoords(ship, [9, 9, 'v'])).toBe(false);
-		expect(gameboard.validateCoords(ship, [9, 2, 'h'])).toBe(true);
-		expect(gameboard.validateCoords(ship, [10, 2, 'h'])).toBe(false);
+		expect(gameboard.placeShip(new Ship(3), [4, 11, 'h'])).toBe(false);
+		expect(gameboard.placeShip(new Ship(3), [4, 7, 'h'])).toBe(false);
+		expect(gameboard.placeShip(new Ship(3), [1, 7, 'v'])).toBe(true);
 	});
 
 	test('Place longer ship', () => {
 		const gameboard = new Gameboard();
+		expect(gameboard.placeShip(new Ship(2), [5, 4, 'h'])).toBe(true);
+	});
+
+	test('Check for placed ships', () => {
+		const gameboard = new Gameboard();
 		const ship = new Ship(3);
-		if (gameboard.validateCoords(ship, [5, 5, 'v'])) {
-			gameboard.placeShip(ship, [5, 5, 'v']);
-			expect(gameboard.validateCoords(new Ship(3), [3, 5, 'v'])).toBe(false);
-			expect(gameboard.validateCoords(new Ship(3), [0, 5, 'v'])).toBe(true);
-		}
+
+		expect(gameboard.placeShip(ship, [5, 5, 'h'])).toBe(true);
+		expect(gameboard.board[5][5]).toBe(0);
+		expect(gameboard.board[5][6]).toBe(0);
+		expect(gameboard.board[5][6]).toBe(0);
+
+		gameboard.placeShip(new Ship(1), [2, 2, 'h']);
+		expect(gameboard.board[2][2]).toBe(1);
 	});
 });
