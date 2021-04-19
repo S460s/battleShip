@@ -26,11 +26,12 @@ class Gameboard {
 
 		for (let i = 0; i < ship.length; i++) {
 			//todo => refactor
-			if (coords[2] === 'v') {
-				if (this.board[coords[0] + i][coords[1]] !== '') return false;
-			} else {
-				if (this.board[coords[0]][coords[1] + i] !== '') return false;
-			}
+			const [x, y] =
+				coords[2] === 'v'
+					? [coords[0] + i, coords[1]]
+					: [coords[0], coords[1] + i];
+
+			if (this.board[x][y] !== '') false;
 		}
 		return true;
 	}
@@ -41,11 +42,12 @@ class Gameboard {
 		this.ships.push(ship);
 		for (let i = 0; i < ship.length; i++) {
 			//todo => refactor
-			if (coords[2] === 'v') {
-				this.board[coords[0] + i][coords[1]] = this.ships.length - 1;
-			} else {
-				this.board[coords[0]][coords[1] + i] = this.ships.length - 1;
-			}
+			const [x, y] =
+				coords[2] === 'v'
+					? [coords[0] + i, coords[1]]
+					: [coords[0], coords[1] + i];
+
+			this.board[x][y] = this.ships.length - 1;
 		}
 		return true;
 	}
