@@ -1,4 +1,10 @@
-class Ship {
+export interface ShipInterface {
+	isSunk: () => boolean;
+	hit: () => void;
+	length: number;
+}
+
+class Ship implements ShipInterface {
 	private attacked = 0;
 	constructor(public length: number) {}
 
@@ -6,7 +12,7 @@ class Ship {
 		this.attacked += 1;
 	}
 
-	public isSunck(): boolean {
+	public isSunk(): boolean {
 		return this.length === this.attacked ? true : false;
 	}
 }
