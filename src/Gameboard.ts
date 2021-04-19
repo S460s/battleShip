@@ -1,12 +1,12 @@
-import { ShipInterface } from './Ship';
+import Ship, { ShipInterface } from './Ship';
 interface coordsInterface {
 	y: number;
 	x: number;
 	flag: 'h' | 'v';
 }
 class Gameboard {
-	ships: ShipInterface[] = [];
-	attackedCoords = [];
+	private ships: ShipInterface[] = [];
+	private attackedCoords: { x: number; y: number }[] = [];
 
 	board: number[][] | string[][] = [
 		['', '', '', '', '', '', '', '', '', ''],
@@ -56,6 +56,33 @@ class Gameboard {
 			this.board[x][y] = this.ships.length - 1;
 		}
 		return true;
+	}
+
+	recieveAttack({ x, y }: { y: number; x: number }) {
+		// todo
+		const index = this.board[y][x];
+
+		if (typeof index === 'number') {
+			this.ships[index].hit();
+			this.board[y][x] = index + 'h';
+
+			if (this.ships[index].isSunk()) {
+				/* 				this.board.forEach((row: number[] | string[]) => {
+					row.forEach((position: number | string) => {
+						position = 's';
+					});
+				}); */
+				for (let i = 0; i < this.board.length; i++) {
+					for (let i2 = 0; i2 < this.board[i].length; i2++) {
+						if (this.board[i][i2] === index + 'h') {
+							this.board[i][i2] = 'sunk';
+						}
+					}
+				}
+			}
+		}
+
+		this.attackedCoords.push({ x, y });
 	}
 }
 

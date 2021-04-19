@@ -37,9 +37,18 @@ describe('Gameboard class', () => {
 		expect(gameboard.placeShip(ship, { y: 5, x: 5, flag: 'h' })).toBe(true);
 		expect(gameboard.board[5][5]).toBe(0);
 		expect(gameboard.board[5][6]).toBe(0);
-		expect(gameboard.board[5][6]).toBe(0);
+		expect(gameboard.board[5][7]).toBe(0);
 
 		gameboard.placeShip(new Ship(1), { y: 2, x: 2, flag: 'h' });
 		expect(gameboard.board[2][2]).toBe(1);
+	});
+
+	test('Hit a ship', () => {
+		const gameboard = new Gameboard();
+		expect(gameboard.placeShip(new Ship(1), { y: 1, x: 1, flag: 'h' })).toBe(
+			true
+		);
+		gameboard.recieveAttack({ y: 1, x: 1 });
+		expect(gameboard.board[1][1]).toBe('sunk');
 	});
 });
