@@ -51,4 +51,17 @@ describe('Gameboard class', () => {
 		gameboard.recieveAttack({ y: 1, x: 1 });
 		expect(gameboard.board[1][1]).toBe('sunk');
 	});
+
+	test('Sunk bigger ship', () => {
+		const gameboard = new Gameboard();
+		expect(gameboard.placeShip(new Ship(2), { y: 2, x: 2, flag: 'h' })).toBe(
+			true
+		);
+
+		gameboard.recieveAttack({ y: 2, x: 2 });
+		expect(gameboard.board[2][2]).toBe('0h');
+
+		gameboard.recieveAttack({ y: 2, x: 3 });
+		expect(gameboard.board[2][3]).toBe('sunk');
+	});
 });
