@@ -7,8 +7,8 @@ export interface ShipInterface {
 
 class Ship implements ShipInterface {
 	private attacked = 0;
+	public coords: { x: number; y: number }[] = [];
 	constructor(public length: number) {}
-	coords: { x: number; y: number }[] = [];
 
 	public hit(): void {
 		this.attacked += 1;

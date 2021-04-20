@@ -49,7 +49,7 @@ describe('Gameboard class', () => {
 			true
 		);
 		gameboard.recieveAttack({ y: 1, x: 1 });
-		expect(gameboard.board[1][1]).toBe('sunk');
+		expect(gameboard.board[1][1]).toBe('s');
 	});
 
 	test('Sunk a bigger ship', () => {
@@ -62,7 +62,7 @@ describe('Gameboard class', () => {
 		expect(gameboard.board[2][2]).toBe('0h');
 
 		gameboard.recieveAttack({ y: 2, x: 3 });
-		expect(gameboard.board[2][3]).toBe('sunk');
+		expect(gameboard.board[2][3]).toBe('s');
 	});
 
 	test('Missed shot', () => {
