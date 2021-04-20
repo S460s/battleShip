@@ -59,8 +59,9 @@ class Gameboard {
 		return true;
 	}
 
-	validateAttack(coords: string): boolean {
-		return this.attackedCoords.includes(coords) ? false : true;
+	validateAttack({ x, y }: coordsInterface): boolean {
+		if (y > this.board.length - 1 || x > this.board.length - 1) return false;
+		return this.attackedCoords.includes(`${y}` + `${x}`) ? false : true;
 	}
 
 	recieveAttack({ y, x }: coordsInterface): void {

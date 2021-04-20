@@ -74,8 +74,9 @@ describe('Gameboard class', () => {
 	test('ValidataAttack', () => {
 		const gameboard = new Gameboard();
 
-		expect(gameboard.validateAttack('33')).toBe(true);
+		expect(gameboard.validateAttack({ y: 3, x: 3 })).toBe(true);
 		gameboard.recieveAttack({ y: 3, x: 3 });
-		expect(gameboard.validateAttack('33')).toBe(false);
+		expect(gameboard.validateAttack({ y: 3, x: 3 })).toBe(false);
+		expect(gameboard.validateAttack({ y: 10, x: 3 })).toBe(false);
 	});
 });
