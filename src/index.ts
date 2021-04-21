@@ -1,9 +1,9 @@
+/* import Ship, { ShipInterface } from './Ship';
 import Gameboard from './Gameboard';
 import Player from './Player';
-/* import Ship, { ShipInterface } from './Ship';
  */
 
-function gamelooptest() {
+/* function gamelooptest() {
 	const gameboard = new Gameboard();
 	const p1 = new Player();
 	p1.enemyGameboard = gameboard;
@@ -17,9 +17,9 @@ function gamelooptest() {
 			}
 		}
 	}
-}
+} 
 
-gamelooptest();
+ gamelooptest(); */
 
 function add(a: number, b: number): number {
 	return a + b;
