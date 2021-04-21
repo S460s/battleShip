@@ -1,5 +1,5 @@
 import Gameboard from '../src/Gameboard';
-import Player from '../src/Player';
+import Player, { PCplayer } from '../src/Player';
 import Ship from '../src/Ship';
 
 describe('Player Class', () => {
@@ -29,5 +29,25 @@ describe('Player Class', () => {
 		p1.placeShip({ x: 3, y: 4, flag: 'h' });
 		p1.placeShip({ x: 5, y: 3, flag: 'h' });
 		expect(p1.allShipsPlaced()).toBe(true);
+	});
+});
+
+describe('PC Player Class', () => {
+	test('Place ships', () => {
+		const gameboard = new Gameboard();
+		const p1 = new PCplayer();
+		p1.enemyGameboard = gameboard;
+		p1.PCplaceShips();
+		expect(p1.allShipsPlaced()).toBe(true);
+	});
+
+	test('Attack random coord', () => {
+		const gameboard = new Gameboard();
+		const p1 = new PCplayer();
+		p1.enemyGameboard = gameboard;
+		p1.PCattack();
+		expect(p1.possibleCoords.length).toBe(99);
+		p1.PCattack();
+		expect(p1.possibleCoords.length).toBe(98);
 	});
 });

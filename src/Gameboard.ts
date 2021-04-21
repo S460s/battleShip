@@ -7,12 +7,12 @@ export interface coordsInterface {
 }
 
 export interface GameboardInterface {
+	board: number[][] | string[][];
 	validateCoords(ship: ShipInterface, coords: coordsInterface): boolean;
 	placeShip(ship: ShipInterface, coords: coordsInterface): boolean;
 
 	validateAttack(coords: coordsInterface): boolean;
 	recieveAttack(coords: coordsInterface): void;
-
 	isGG(): boolean;
 }
 
@@ -21,7 +21,7 @@ class Gameboard {
 	private attackedCoords: string[] = [];
 	private hitShips = 0;
 
-	board: number[][] | string[][] = [
+	public board: number[][] | string[][] = [
 		['', '', '', '', '', '', '', '', '', ''],
 		['', '', '', '', '', '', '', '', '', ''],
 		['', '', '', '', '', '', '', '', '', ''],
