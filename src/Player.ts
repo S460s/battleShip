@@ -2,29 +2,31 @@ import Gameboard, { GameboardInterface, coordsInterface } from './Gameboard';
 import Ship, { ShipInterface } from './Ship';
 export default class Player {
 	gameboard = new Gameboard();
-	public ships: ShipInterface[] = [new Ship(1), new Ship(2)];
 	private placedShips = 0;
 
-	public placeShips(coords: coordsInterface, ship: ShipInterface): void {
-		if (this.gameboard.validateCoords(ship, coords)) {
-			this.gameboard.placeShip(ship, coords);
-			this.placedShips += 1;
-		}
-	}
+	public enemyGameboard: null | GameboardInterface = null;
+	public ships: ShipInterface[] = [new Ship(1), new Ship(2)];
 
-	public attack(
-		enemyGameboard: GameboardInterface,
-		coords: coordsInterface
-	): boolean {
-		if (enemyGameboard?.validateAttack(coords)) {
-			enemyGameboard.recieveAttack(coords);
+	public placeShip(coords: coordsInterface): boolean {
+		if (this.gameboard.validateCoords(this.ships[this.placedShips], coords)) {
+			this.gameboard.placeShip(this.ships[this.placedShips], coords);
+			this.placedShips += 1;
 			return true;
 		}
 		return false;
 	}
 
-	public isWinner(enemyGameboard: GameboardInterface): boolean {
-		return enemyGameboard.isGG();
+	public attack(coords: coordsInterface): boolean {
+		if (this.enemyGameboard?.validateAttack(coords)) {
+			this.enemyGameboard.recieveAttack(coords);
+			return true;
+		}
+		return false;
+	}
+
+	public isWinner(): boolean {
+		if (this.enemyGameboard) return this.enemyGameboard.isGG();
+		return false;
 	}
 
 	public allShipsPlaced(): boolean {

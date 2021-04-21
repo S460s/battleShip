@@ -79,4 +79,14 @@ describe('Gameboard class', () => {
 		expect(gameboard.validateAttack({ y: 3, x: 3 })).toBe(false);
 		expect(gameboard.validateAttack({ y: 10, x: 3 })).toBe(false);
 	});
+
+	test('Placing ships on same coords', () => {
+		const gameboard = new Gameboard();
+		const ship = new Ship(1);
+		gameboard.placeShip(ship, { y: 3, x: 3, flag: 'v' });
+		expect(gameboard.board[3][3]).toBe(0);
+		expect(gameboard.validateCoords(ship, { y: 3, x: 3, flag: 'v' })).toBe(
+			false
+		);
+	});
 });

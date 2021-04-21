@@ -47,8 +47,9 @@ class Gameboard {
 					? [coords.y + i, coords.x]
 					: [coords.y, coords.x + i];
 
-			if (this.board[y][x] !== '') false;
+			if (this.board[y][x] !== '') return false;
 		}
+
 		return true;
 	}
 
