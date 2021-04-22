@@ -1,5 +1,7 @@
-import Player, { PCplayer } from './Player';
+/* import Player, { PCplayer } from './Player';
 import { coordsInterface } from './Gameboard';
+
+const pcBoardDiv = document.getElementById('pcBoard')!;
 
 class playerDOM {
 	constructor(private player: Player, private container: HTMLDivElement) {}
@@ -10,20 +12,29 @@ class playerDOM {
 		}
 	}
 
-	private updateBoard() {
+	public updateBoard() {
 		const board = this.player.gameboard.board;
 		board.forEach((row: string[] | number[], index1: number) => {
 			row.forEach((square: string | number, index2: number) => {
+				const index = Number(`${index1}` + `${index2}`);
+				const child = this.container.children[index] as HTMLDivElement;
 				if (typeof square === 'number') {
-					const index = Number(`${index1}` + `${index2}`);
 					console.log(index);
-					const child = this.container.children[index] as HTMLDivElement;
 					child.style.backgroundColor = 'cyan';
+				} else if (typeof square === 'string') {
+					if (square[square.length - 1] === 'h') {
+						child.style.backgroundColor = 'tomato';
+					} else if (square[square.length - 1] === 's') {
+						child.style.backgroundColor = 'red';
+					} else if (square[square.length - 1] === 'm') {
+						child.style.backgroundColor = 'gray';
+					}
 				}
 			});
 		});
 		if (this.player.allShipsPlaced()) {
 			this.renderBoard();
+			pcBoardDiv.style.display = 'grid';
 		}
 	}
 
@@ -68,7 +79,7 @@ class playerDOM {
 export class PCDOM {
 	constructor(public PCplayer: PCplayer, private container: HTMLDivElement) {}
 
-	private updateBoard() {
+	public updateBoard() {
 		const board = this.PCplayer.gameboard.board;
 		board.forEach((row: string[] | number[], index1: number) => {
 			row.forEach((square: string | number, index2: number) => {
@@ -87,6 +98,8 @@ export class PCDOM {
 		});
 	}
 
+	updateEnemy(): void {}
+
 	recieveAttack(e: MouseEvent) {
 		const target = e.target as HTMLDivElement;
 		const coords = JSON.parse(
@@ -94,7 +107,10 @@ export class PCDOM {
 		) as coordsInterface;
 		console.log(this.PCplayer.gameboard.board);
 		this.PCplayer.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
+
 		this.updateBoard();
+		this.PCplayer.PCattack();
+		this.updateEnemy();
 	}
 
 	renderBoard(): void {
@@ -118,3 +134,4 @@ export class PCDOM {
 }
 
 export { playerDOM };
+ */

@@ -21,9 +21,43 @@ import Player from './Player';
 
  gamelooptest(); */
 
-import { playerDOM, PCDOM } from './dom';
+/* import { playerDOM, PCDOM } from './dom';*/
 import Gameboard from './Gameboard';
 import Player, { PCplayer } from './Player';
+
+/* renderBoard(): void {
+	const board = this.PCplayer.gameboard.board;
+	this.PCplayer.PCplaceShips();
+	console.log(this.PCplayer.gameboard.board);
+
+	board.forEach((row: string[] | number[], index1: number) => {
+		row.forEach((square: string | number, index2: number) => {
+			const cell = document.createElement('div');
+			cell.className = 'square';
+			cell.addEventListener('click', this.recieveAttack.bind(this));
+
+			cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
+			this.container.appendChild(cell);
+		});
+	});
+
+	this.container.style.cssText = `grid-template-columns: repeat(${board.length}, auto);`;
+}
+} */
+
+function renderBoard(container: HTMLDivElement, player: Player): void {
+	const board = player.gameboard.board;
+	board.forEach((row: string[] | number[], index1: number) => {
+		row.forEach((square: string | number, index2: number) => {
+			const cell = document.createElement('div');
+			cell.className = 'square';
+			//cell.addEventListener('click', this.recieveAttack.bind(this));
+			cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
+			container.appendChild(cell);
+		});
+	});
+	container.style.cssText = `grid-template-columns: repeat(${board.length}, auto);`;
+}
 
 function gameloop() {
 	const board: HTMLDivElement = document.querySelector('#playerBoard')!;
@@ -35,10 +69,7 @@ function gameloop() {
 	player.enemyGameboard = pcPlayer.gameboard;
 	pcPlayer.enemyGameboard = player.gameboard;
 
-	const p1DOM = new playerDOM(player, board);
-	const pcDOM = new PCDOM(pcPlayer, pcboard);
-	p1DOM.renderBoard();
-	pcDOM.renderBoard();
+	renderBoard(board, player);
 }
 
 gameloop();
