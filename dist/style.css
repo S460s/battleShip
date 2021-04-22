@@ -14,9 +14,9 @@
 	display: flex;
 }
 
-/* #pcBoard {
+#pcBoard {
 	display: none;
-} */
+}
 
 .square {
 	border: 1px solid;

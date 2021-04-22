@@ -1,17 +1,16 @@
-import Gameboard from './Gameboard';
+import Gameboard, { coordsInterface } from './Gameboard';
 import Player, { PCplayer } from './Player';
 
-/* public updateBoard() {
-	const board = this.player.gameboard.board;
-	board.forEach((row: string[] | number[], index1: number) => {
-		row.forEach((square: string | number, index2: number) => {
-			const index = Number(`${index1}` + `${index2}`);
-			const child = this.container.children[index] as HTMLDivElement;
-	});
-	if (this.player.allShipsPlaced()) {
-		this.renderBoard();
-		pcBoardDiv.style.display = 'grid';
-	}
+/* placeShip(e: MouseEvent): void {
+	const target = e.target as HTMLDivElement;
+	const coords = JSON.parse(
+		target.dataset.coord as string
+	) as coordsInterface;
+	this.player.placeShip({ y: +coords.y, x: +coords.x, flag: 'h' });
+
+	this.updateBoard();
+
+	console.log(this.player.gameboard.board);
 } */
 
 function chooseColor(square: string | number): string {
@@ -30,7 +29,11 @@ function chooseColor(square: string | number): string {
 	return color;
 }
 
-function updateBoard(container: HTMLDivElement, player: Player): void {
+const updateBoard = (
+	container: HTMLDivElement,
+	player: Player,
+	type: 'player' | 'PC'
+): void => {
 	const board = player.gameboard.board;
 	board.forEach((row: string[] | number[], index1: number) => {
 		row.forEach((square: string | number, index2: number) => {
@@ -39,6 +42,27 @@ function updateBoard(container: HTMLDivElement, player: Player): void {
 			child.style.backgroundColor = chooseColor(square);
 		});
 	});
+
+	if (player.allShipsPlaced() && type === 'player') {
+		const pcBoard = document.getElementById('pcBoard')!;
+		pcBoard.style.display = 'grid';
+	}
+};
+
+function placePlayerShip(
+	e: MouseEvent,
+	player: Player,
+	flag: 'v' | 'h',
+	container: HTMLDivElement
+): void {
+	if (!player.allShipsPlaced()) {
+		const target = e.target as HTMLDivElement;
+		const coords = JSON.parse(
+			target.dataset.coord as string
+		) as coordsInterface;
+		player.placeShip({ y: +coords.y, x: +coords.x, flag });
+		updateBoard(container, player, 'player');
+	}
 }
 
 function clearDiv(container: HTMLDivElement): void {
@@ -47,13 +71,21 @@ function clearDiv(container: HTMLDivElement): void {
 	}
 }
 
-function renderBoard(container: HTMLDivElement, player: Player): void {
+function renderBoard(
+	container: HTMLDivElement,
+	player: Player,
+	type: 'player' | 'PC'
+): void {
 	const board = player.gameboard.board;
 	board.forEach((row: string[] | number[], index1: number) => {
 		row.forEach((square: string | number, index2: number) => {
 			const cell = document.createElement('div');
 			cell.className = 'square';
-			//cell.addEventListener('click', this.recieveAttack.bind(this));
+			if (type === 'player') {
+				cell.addEventListener('click', (e) => {
+					placePlayerShip(e, player, 'v', container);
+				});
+			}
 			cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
 			container.appendChild(cell);
 		});
@@ -71,10 +103,10 @@ function gameloop() {
 	player.enemyGameboard = pcPlayer.gameboard;
 	pcPlayer.enemyGameboard = player.gameboard;
 
-	renderBoard(board, player);
-	renderBoard(pcboard, pcPlayer);
+	renderBoard(board, player, 'player');
+	renderBoard(pcboard, pcPlayer, 'PC');
 	pcPlayer.PCplaceShips();
-	updateBoard(pcboard, pcPlayer);
+	updateBoard(pcboard, pcPlayer, 'PC');
 }
 
 gameloop();

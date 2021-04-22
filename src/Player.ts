@@ -36,6 +36,7 @@ export default class Player {
 	}
 
 	public allShipsPlaced(): boolean {
+		console.log(this.placedShips, this.ships.length);
 		return this.placedShips === this.ships.length;
 	}
 }
