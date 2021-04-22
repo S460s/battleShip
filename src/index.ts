@@ -2,8 +2,19 @@ import Gameboard, { coordsInterface } from './Gameboard';
 import Player, { PCplayer } from './Player';
 const board: HTMLDivElement = document.querySelector('#playerBoard')!;
 const pcboard: HTMLDivElement = document.querySelector('#pcBoard')!;
+const subTitle: HTMLElement = document.querySelector('h2')!;
 
-function chooseColor(square: string | number): string {
+//todo (1) => Refactor
+const player = new Player();
+const pcPlayer = new PCplayer();
+
+function checkWinner(player: Player) {
+	if (player.isWinner()) {
+		subTitle.textContent = `${player.type} winns!`;
+	}
+}
+
+function chooseColor(square: string | number, type: string): string {
 	let color: string = 'white';
 	if (typeof square === 'string') {
 		if (square[square.length - 1] === 'h') {
@@ -13,7 +24,7 @@ function chooseColor(square: string | number): string {
 		} else if (square[square.length - 1] === 'm') {
 			color = 'gray';
 		}
-	} else if (typeof square === 'number') {
+	} else if (typeof square === 'number' && type === 'player') {
 		color = 'blue';
 	}
 	return color;
@@ -25,25 +36,25 @@ function updateBoard(container: HTMLDivElement, player: Player): void {
 		row.forEach((square: string | number, index2: number) => {
 			const index = Number(`${index1}` + `${index2}`);
 			const child = container.children[index] as HTMLDivElement;
-			child.style.backgroundColor = chooseColor(square);
+			child.style.backgroundColor = chooseColor(square, player.type);
 		});
 	});
-
-	if (player.allShipsPlaced() && player.type === 'player') {
-		const pcBoard = document.getElementById('pcBoard')!;
-		pcBoard.style.display = 'grid';
-	}
 }
 
-function PCrecieveAttack(e: MouseEvent, player: Player) {
+function PCrecieveAttack(e: MouseEvent, pcPlayer: PCplayer) {
 	const target = e.target as HTMLDivElement;
 	const coords = JSON.parse(target.dataset.coord as string) as coordsInterface;
 	if (
-		player.gameboard.board[+coords.y][+coords.x] === '' ||
-		typeof player.gameboard.board[+coords.y][+coords.x] === 'number'
+		pcPlayer.gameboard.board[+coords.y][+coords.x] === '' ||
+		typeof pcPlayer.gameboard.board[+coords.y][+coords.x] === 'number'
 	) {
-		player.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
-		updateBoard(pcboard, player);
+		pcPlayer.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
+		updateBoard(pcboard, pcPlayer);
+		checkWinner(player);
+		pcPlayer.PCattack();
+		checkWinner(pcPlayer);
+		//todo (1)
+		updateBoard(board, player);
 	}
 }
 
@@ -61,6 +72,11 @@ function placePlayerShip(
 		player.placeShip({ y: +coords.y, x: +coords.x, flag });
 		updateBoard(container, player);
 	}
+	if (player.allShipsPlaced()) {
+		const pcBoard = document.getElementById('pcBoard')!;
+		pcBoard.style.display = 'grid';
+		subTitle.innerText = 'Attack!';
+	}
 }
 
 function renderBoard(container: HTMLDivElement, player: Player): void {
@@ -75,7 +91,7 @@ function renderBoard(container: HTMLDivElement, player: Player): void {
 				});
 			} else if (player.type === 'PC') {
 				cell.addEventListener('click', (e) => {
-					PCrecieveAttack(e, player);
+					PCrecieveAttack(e, player as PCplayer);
 				});
 			}
 			cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
@@ -85,23 +101,7 @@ function renderBoard(container: HTMLDivElement, player: Player): void {
 	container.style.cssText = `grid-template-columns: repeat(${board.length}, auto);`;
 }
 
-/* recieveAttack(e: MouseEvent) {
-	const target = e.target as HTMLDivElement;
-	const coords = JSON.parse(
-		target.dataset.coord as string
-	) as coordsInterface;
-	console.log(this.PCplayer.gameboard.board);
-	this.PCplayer.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
-
-	this.updateBoard();
-	this.PCplayer.PCattack();
-	this.updateEnemy();
-} */
-
 function gameloop() {
-	const player = new Player();
-	const pcPlayer = new PCplayer();
-
 	player.enemyGameboard = pcPlayer.gameboard;
 	pcPlayer.enemyGameboard = player.gameboard;
 
