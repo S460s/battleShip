@@ -60,9 +60,13 @@ class Gameboard {
 		return true;
 	}
 
-	public validateAttack({ x, y }: coordsInterface): boolean {
-		if (y > this.board.length - 1 || x > this.board.length - 1) return false;
-		return this.attackedCoords.includes(`${y}` + `${x}`) ? false : true;
+	public validateAttack(coords: coordsInterface): boolean {
+		console.log(coords);
+		if (coords.y > this.board.length - 1 || coords.x > this.board.length - 1)
+			return false;
+		return this.attackedCoords.includes(`${coords.y}` + `${coords.x}`)
+			? false
+			: true;
 	}
 
 	public recieveAttack({ y, x }: coordsInterface): void {

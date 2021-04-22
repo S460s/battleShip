@@ -10,7 +10,7 @@ const pcPlayer = new PCplayer();
 
 function checkWinner(player: Player) {
 	if (player.isWinner()) {
-		subTitle.textContent = `${player.type} winns!`;
+		subTitle.textContent = player.type + ' is winner !';
 	}
 }
 
@@ -42,19 +42,23 @@ function updateBoard(container: HTMLDivElement, player: Player): void {
 }
 
 function PCrecieveAttack(e: MouseEvent, pcPlayer: PCplayer) {
-	const target = e.target as HTMLDivElement;
-	const coords = JSON.parse(target.dataset.coord as string) as coordsInterface;
-	if (
-		pcPlayer.gameboard.board[+coords.y][+coords.x] === '' ||
-		typeof pcPlayer.gameboard.board[+coords.y][+coords.x] === 'number'
-	) {
-		pcPlayer.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
-		updateBoard(pcboard, pcPlayer);
-		checkWinner(player);
-		pcPlayer.PCattack();
-		checkWinner(pcPlayer);
-		//todo (1)
-		updateBoard(board, player);
+	if (pcPlayer.isWinner() === false && player.isWinner() === false) {
+		const target = e.target as HTMLDivElement;
+		const coords = JSON.parse(
+			target.dataset.coord as string
+		) as coordsInterface;
+		if (
+			pcPlayer.gameboard.board[+coords.y][+coords.x] === '' ||
+			typeof pcPlayer.gameboard.board[+coords.y][+coords.x] === 'number'
+		) {
+			pcPlayer.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
+			updateBoard(pcboard, pcPlayer);
+			checkWinner(player);
+			pcPlayer.PCattack();
+			checkWinner(pcPlayer);
+			//todo (1)
+			updateBoard(board, player);
+		}
 	}
 }
 

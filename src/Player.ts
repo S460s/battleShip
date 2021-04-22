@@ -12,7 +12,13 @@ export interface PlayerInterface {
 export default class Player {
 	private placedShips = 0;
 	public enemyGameboard: null | Gameboard = null;
-	private ships: ShipInterface[] = [new Ship(1), new Ship(2)];
+	private ships: ShipInterface[] = [
+		new Ship(1),
+		new Ship(2),
+		new Ship(2),
+		new Ship(3),
+		new Ship(4),
+	];
 	readonly gameboard = new Gameboard();
 	type = 'player';
 
@@ -37,7 +43,6 @@ export default class Player {
 	}
 
 	public allShipsPlaced(): boolean {
-		console.log(this.placedShips, this.ships.length);
 		return this.placedShips === this.ships.length;
 	}
 }
@@ -67,8 +72,8 @@ export class PCplayer extends Player {
 	}
 
 	public PCattack(): void {
-		const index = Math.floor(Math.random() * this.possibleCoords.length) - 1;
-
+		const index = Math.floor(Math.random() * this.possibleCoords.length);
+		console.log(index + ' i');
 		super.attack(this.possibleCoords[index]);
 		this.possibleCoords = this.possibleCoords.filter(({ x, y }) => {
 			const flag =
