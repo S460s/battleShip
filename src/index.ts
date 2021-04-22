@@ -21,13 +21,21 @@ import Player from './Player';
 
  gamelooptest(); */
 
-import { DOM } from './dom';
+import { playerDOM } from './dom';
 import Gameboard from './Gameboard';
-import Player from './Player';
+import Player, { PCplayer } from './Player';
 
-const gameboard = new Gameboard();
-const p1 = new Player();
-p1.enemyGameboard = gameboard;
-const board: HTMLDivElement = document.querySelector('.board')!;
-const p1DOM = new DOM(new Player(), board);
-p1DOM.renderBoard();
+function gameloop() {
+	const board: HTMLDivElement = document.querySelector('#playerBoard')!;
+
+	const player = new Player();
+	const pcPlayer = new PCplayer();
+
+	player.enemyGameboard = pcPlayer.gameboard;
+	pcPlayer.enemyGameboard = player.gameboard;
+
+	const p1DOM = new playerDOM(player, board);
+	p1DOM.renderBoard();
+}
+
+gameloop();

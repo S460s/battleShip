@@ -1,7 +1,7 @@
 import Player from './Player';
 import { coordsInterface } from './Gameboard';
 
-class DOM {
+class playerDOM {
 	constructor(private player: Player, private container: HTMLDivElement) {}
 
 	clearBoard(): void {
@@ -16,13 +16,14 @@ class DOM {
 			target.dataset.coord as string
 		) as coordsInterface;
 		this.player.placeShip({ y: +coords.y, x: +coords.x, flag: 'h' });
+
 		this.clearBoard();
 		this.renderBoard();
+
 		console.log(this.player.gameboard.board);
 	}
 
 	renderBoard(): void {
-		console.log(this.player);
 		const board = this.player.gameboard.board;
 
 		board.forEach((row: string[] | number[], index1: number) => {
@@ -34,7 +35,12 @@ class DOM {
 				}
 				cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
 				this.container.appendChild(cell);
-				cell.addEventListener('click', this.placeShip.bind(this));
+
+				if (!this.player.allShipsPlaced()) {
+					cell.addEventListener('click', this.placeShip.bind(this));
+				} else {
+					cell.removeEventListener('click', this.placeShip.bind(this));
+				}
 			});
 		});
 
@@ -42,4 +48,4 @@ class DOM {
 	}
 }
 
-export { DOM };
+export { playerDOM };
