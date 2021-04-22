@@ -14,6 +14,7 @@ export default class Player {
 	public enemyGameboard: null | Gameboard = null;
 	private ships: ShipInterface[] = [new Ship(1), new Ship(2)];
 	readonly gameboard = new Gameboard();
+	type = 'player';
 
 	public placeShip(coords: coordsInterface): void {
 		if (this.gameboard.validateCoords(this.ships[this.placedShips], coords)) {
@@ -42,6 +43,7 @@ export default class Player {
 }
 
 export class PCplayer extends Player {
+	type = 'PC';
 	public possibleCoords: coordsInterface[] = this.makePsoosibleCoords();
 
 	private makePsoosibleCoords(): coordsInterface[] {
