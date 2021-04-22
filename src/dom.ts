@@ -10,21 +10,21 @@ class playerDOM {
 		}
 	}
 
-	updateBoard() {
+	private updateBoard() {
 		const board = this.player.gameboard.board;
-
 		board.forEach((row: string[] | number[], index1: number) => {
 			row.forEach((square: string | number, index2: number) => {
-				if (typeof square === 'string') {
-					if (square[square.length - 1] === 'h') {
-						const child = this.container.children[
-							Number(`${index1}` + `${index2}`)
-						] as HTMLDivElement;
-						child.style.cssText = 'cyan';
-					}
+				if (typeof square === 'number') {
+					const index = Number(`${index1}` + `${index2}`);
+					console.log(index);
+					const child = this.container.children[index] as HTMLDivElement;
+					child.style.backgroundColor = 'cyan';
 				}
 			});
 		});
+		if (this.player.allShipsPlaced()) {
+			this.renderBoard();
+		}
 	}
 
 	placeShip(e: MouseEvent): void {
@@ -34,14 +34,14 @@ class playerDOM {
 		) as coordsInterface;
 		this.player.placeShip({ y: +coords.y, x: +coords.x, flag: 'h' });
 
-		this.clearBoard();
-		this.renderBoard();
+		this.updateBoard();
 
 		console.log(this.player.gameboard.board);
 	}
 
 	renderBoard(): void {
 		const board = this.player.gameboard.board;
+		this.clearBoard();
 
 		board.forEach((row: string[] | number[], index1: number) => {
 			row.forEach((square: string | number, index2: number) => {
@@ -57,8 +57,6 @@ class playerDOM {
 
 				if (!this.player.allShipsPlaced()) {
 					cell.addEventListener('click', this.placeShip.bind(this));
-				} else {
-					cell.removeEventListener('click', this.placeShip.bind(this));
 				}
 			});
 		});
