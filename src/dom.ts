@@ -65,17 +65,22 @@ class playerDOM {
 	}
 }
 
-class PCDOM {
+export class PCDOM {
 	constructor(public PCplayer: PCplayer, private container: HTMLDivElement) {}
 
-	updateBoard() {
+	private updateBoard() {
 		const board = this.PCplayer.gameboard.board;
-
 		board.forEach((row: string[] | number[], index1: number) => {
 			row.forEach((square: string | number, index2: number) => {
+				const index = Number(`${index1}` + `${index2}`);
 				if (typeof square === 'string') {
+					const child = this.container.children[index] as HTMLDivElement;
 					if (square[square.length - 1] === 'h') {
-						this.container.children[Number(`${index1}` + `${index2}`)];
+						child.style.backgroundColor = 'tomato';
+					} else if (square[square.length - 1] === 's') {
+						child.style.backgroundColor = 'red';
+					} else if (square[square.length - 1] === 'm') {
+						child.style.backgroundColor = 'gray';
 					}
 				}
 			});
@@ -87,24 +92,21 @@ class PCDOM {
 		const coords = JSON.parse(
 			target.dataset.coord as string
 		) as coordsInterface;
+		console.log(this.PCplayer.gameboard.board);
 		this.PCplayer.gameboard.recieveAttack({ x: +coords.x, y: +coords.y });
+		this.updateBoard();
 	}
 
 	renderBoard(): void {
 		const board = this.PCplayer.gameboard.board;
 		this.PCplayer.PCplaceShips();
+		console.log(this.PCplayer.gameboard.board);
 
 		board.forEach((row: string[] | number[], index1: number) => {
 			row.forEach((square: string | number, index2: number) => {
 				const cell = document.createElement('div');
 				cell.className = 'square';
 				cell.addEventListener('click', this.recieveAttack.bind(this));
-
-				if (typeof square === 'string') {
-					if (square[square.length - 1] === 'h') {
-						cell.style.backgroundColor = 'red';
-					}
-				}
 
 				cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
 				this.container.appendChild(cell);
