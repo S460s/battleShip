@@ -12,15 +12,9 @@ describe('Gameboard class', () => {
 
 	test('Pass impossible coords', () => {
 		const gameboard = new Gameboard();
-		expect(gameboard.placeShip(new Ship(3), { y: 4, x: 11, flag: 'h' })).toBe(
-			false
-		);
-		expect(gameboard.placeShip(new Ship(3), { y: 4, x: 7, flag: 'h' })).toBe(
-			false
-		);
-		expect(gameboard.placeShip(new Ship(3), { y: 1, x: 7, flag: 'v' })).toBe(
-			true
-		);
+		expect(
+			gameboard.validateCoords(new Ship(2), { y: 0, x: 7, flag: 'h' })
+		).toBe(true);
 	});
 
 	test('Place longer ship', () => {
