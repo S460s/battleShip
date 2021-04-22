@@ -1,49 +1,51 @@
-/* import Ship, { ShipInterface } from './Ship';
-import Gameboard from './Gameboard';
-import Player from './Player';
- */
-
-/* function gamelooptest() {
-	const gameboard = new Gameboard();
-	const p1 = new Player();
-	p1.enemyGameboard = gameboard;
-	while (!p1.allShipsPlaced()) {
-		const y = prompt('Enter y: ');
-		const x = prompt('Enter x: ');
-		const f = prompt('Horizontaly (h) or Vertically (v) ?');
-		if (x && y && (f === 'h' || f === 'v')) {
-			if (p1.placeShip({ x: parseInt(x), y: parseInt(y), flag: f })) {
-				console.log(p1.gameboard.board);
-			}
-		}
-	}
-} 
-
- gamelooptest(); */
-
-/* import { playerDOM, PCDOM } from './dom';*/
 import Gameboard from './Gameboard';
 import Player, { PCplayer } from './Player';
 
-/* renderBoard(): void {
-	const board = this.PCplayer.gameboard.board;
-	this.PCplayer.PCplaceShips();
-	console.log(this.PCplayer.gameboard.board);
-
+/* public updateBoard() {
+	const board = this.player.gameboard.board;
 	board.forEach((row: string[] | number[], index1: number) => {
 		row.forEach((square: string | number, index2: number) => {
-			const cell = document.createElement('div');
-			cell.className = 'square';
-			cell.addEventListener('click', this.recieveAttack.bind(this));
+			const index = Number(`${index1}` + `${index2}`);
+			const child = this.container.children[index] as HTMLDivElement;
+	});
+	if (this.player.allShipsPlaced()) {
+		this.renderBoard();
+		pcBoardDiv.style.display = 'grid';
+	}
+} */
 
-			cell.dataset.coord = `{"y": "${index1}", "x": "${index2}"}`;
-			this.container.appendChild(cell);
+function chooseColor(square: string | number): string {
+	let color: string = 'white';
+	if (typeof square === 'string') {
+		if (square[square.length - 1] === 'h') {
+			color = 'tomato';
+		} else if (square[square.length - 1] === 's') {
+			color = 'red';
+		} else if (square[square.length - 1] === 'm') {
+			color = 'gray';
+		}
+	} else if (typeof square === 'number') {
+		color = 'blue';
+	}
+	return color;
+}
+
+function updateBoard(container: HTMLDivElement, player: Player): void {
+	const board = player.gameboard.board;
+	board.forEach((row: string[] | number[], index1: number) => {
+		row.forEach((square: string | number, index2: number) => {
+			const index = Number(`${index1}` + `${index2}`);
+			const child = container.children[index] as HTMLDivElement;
+			child.style.backgroundColor = chooseColor(square);
 		});
 	});
-
-	this.container.style.cssText = `grid-template-columns: repeat(${board.length}, auto);`;
 }
-} */
+
+function clearDiv(container: HTMLDivElement): void {
+	while (container.childNodes.length) {
+		container.removeChild(container.lastChild!);
+	}
+}
 
 function renderBoard(container: HTMLDivElement, player: Player): void {
 	const board = player.gameboard.board;
@@ -70,6 +72,9 @@ function gameloop() {
 	pcPlayer.enemyGameboard = player.gameboard;
 
 	renderBoard(board, player);
+	renderBoard(pcboard, pcPlayer);
+	pcPlayer.PCplaceShips();
+	updateBoard(pcboard, pcPlayer);
 }
 
 gameloop();
