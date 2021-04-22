@@ -21,9 +21,13 @@ import Player from './Player';
 
  gamelooptest(); */
 
-import { renderBoard } from './dom';
+import { DOM } from './dom';
 import Gameboard from './Gameboard';
 import Player from './Player';
 
+const gameboard = new Gameboard();
+const p1 = new Player();
+p1.enemyGameboard = gameboard;
 const board: HTMLDivElement = document.querySelector('.board')!;
-renderBoard(10, board);
+const p1DOM = new DOM(p1, board);
+p1DOM.renderBoard();

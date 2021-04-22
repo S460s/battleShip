@@ -1,10 +1,23 @@
-function renderBoard(size = 10, container: HTMLDivElement): void {
-	for (let x = 0; x < size ** 2; x++) {
-		const cell = document.createElement('div');
-		cell.className = 'square';
-		container.appendChild(cell);
+import Player from './Player';
+
+class DOM {
+	constructor(private player: Player, private container: HTMLDivElement) {}
+
+	renderBoard(): void {
+		const board = this.player.gameboard.board;
+
+		board.forEach((row: string[] | number[], index1: number) => {
+			row.forEach((square: string | number, index2: number) => {
+				const cell = document.createElement('div');
+				cell.className = 'square';
+				cell.textContent = `${square}`;
+				cell.dataset.coord = `{y: ${index1}, x: ${index2}}`;
+				this.container.appendChild(cell);
+			});
+		});
+
+		this.container.style.cssText = `grid-template-columns: repeat(${board.length}, auto);`;
 	}
-	container.style.cssText = `grid-template-columns: repeat(${size}, auto);`;
 }
 
-export { renderBoard };
+export { DOM };

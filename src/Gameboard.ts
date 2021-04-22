@@ -6,16 +6,6 @@ export interface coordsInterface {
 	flag?: 'h' | 'v';
 }
 
-export interface GameboardInterface {
-	board: number[][] | string[][];
-	validateCoords(ship: ShipInterface, coords: coordsInterface): boolean;
-	placeShip(ship: ShipInterface, coords: coordsInterface): boolean;
-
-	validateAttack(coords: coordsInterface): boolean;
-	recieveAttack(coords: coordsInterface): void;
-	isGG(): boolean;
-}
-
 class Gameboard {
 	private ships: ShipInterface[] = [];
 	private attackedCoords: string[] = [];

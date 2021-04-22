@@ -1,9 +1,17 @@
-import Gameboard, { GameboardInterface, coordsInterface } from './Gameboard';
+import Gameboard, { coordsInterface } from './Gameboard';
 import Ship, { ShipInterface } from './Ship';
+
+export interface PlayerInterface {
+	gameboard: Gameboard;
+	enemyGameboard: null | Gameboard;
+	placeShip(coords: coordsInterface): void;
+	attack(coords: coordsInterface): boolean;
+	isWinner(): boolean;
+}
 
 export default class Player {
 	private placedShips = 0;
-	public enemyGameboard: null | GameboardInterface = null;
+	public enemyGameboard: null | Gameboard = null;
 	private ships: ShipInterface[] = [new Ship(1), new Ship(2)];
 	readonly gameboard = new Gameboard();
 
