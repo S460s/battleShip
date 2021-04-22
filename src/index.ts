@@ -29,5 +29,5 @@ const gameboard = new Gameboard();
 const p1 = new Player();
 p1.enemyGameboard = gameboard;
 const board: HTMLDivElement = document.querySelector('.board')!;
-const p1DOM = new DOM(p1, board);
+const p1DOM = new DOM(new Player(), board);
 p1DOM.renderBoard();

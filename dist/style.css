@@ -3,8 +3,8 @@
 }
 
 .board {
-	width: 50vw;
-	height: 50vh;
+	width: 600px;
+	height: 600px;
 	border: 2px solid;
 	margin: auto;
 	display: grid;
@@ -12,4 +12,7 @@
 
 .square {
 	border: 1px solid;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
