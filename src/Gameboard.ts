@@ -36,7 +36,7 @@ class Gameboard {
 
 	public validateCoords(ship: ShipInterface, coords: coordsInterface): boolean {
 		// Min coord is 0 and max is 9
-		if (coords.y > 9 || coords.x > 9) return false;
+		//if (coords.y > 9 || coords.x > 9) return false;
 
 		const max = coords.flag === 'v' ? coords.y : coords.x;
 		if (max + ship.length + 1 > this.board.length) return false;

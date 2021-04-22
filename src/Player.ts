@@ -36,6 +36,7 @@ export class PCplayer extends Player {
 	public possibleCoords: coordsInterface[] = this.makePsoosibleCoords();
 
 	private makePsoosibleCoords(): coordsInterface[] {
+		// possible redo
 		const coords = [];
 		for (let i = 0; i < this.gameboard.board.length; i++) {
 			for (let i2 = 0; i2 < this.gameboard.board.length; i2++) {

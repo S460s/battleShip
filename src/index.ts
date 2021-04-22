@@ -21,8 +21,9 @@ import Player from './Player';
 
  gamelooptest(); */
 
-function add(a: number, b: number): number {
-	return a + b;
-}
+import { renderBoard } from './dom';
+import Gameboard from './Gameboard';
+import Player from './Player';
 
-export default add;
+const board: HTMLDivElement = document.querySelector('.board')!;
+renderBoard(10, board);

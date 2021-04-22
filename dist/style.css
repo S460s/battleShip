@@ -1,0 +1,15 @@
+.title {
+	text-align: center;
+}
+
+.board {
+	width: 50vw;
+	height: 50vh;
+	border: 2px solid;
+	margin: auto;
+	display: grid;
+}
+
+.square {
+	border: 1px solid;
+}
